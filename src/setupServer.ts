@@ -7,13 +7,13 @@ import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { config } from './config';
 import { createClient } from 'redis';
 import { Server } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
-import applicationRoutes from './routes';
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import applicationRoutes from '@root/routes';
 import Logger from 'bunyan';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { config } from '@root/config';
 
 const SERVER_PORT = 5001;
 
@@ -106,5 +106,6 @@ export class ChattyServer {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private socketConnections(io: Server) {}
 }
