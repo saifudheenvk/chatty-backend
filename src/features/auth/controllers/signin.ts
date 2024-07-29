@@ -9,7 +9,6 @@ import { userService } from '@services/db/user.service';
 import { IUserDocument } from '@user/interfaces/user.interface';
 import { Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
 
 export class SignIn {
   @JoiValidation(loginSchema)
@@ -40,18 +39,5 @@ export class SignIn {
     );
     req.session = { jwt: jwtToken };
     res.status(HTTP_STATUS.OK).json({ message: 'User Successfully LoggedIn', user: user, token: jwtToken });
-  }
-
-  private signToken(data: IAuthDocument, userObjectId: ObjectId) {
-    return JWT.sign(
-      {
-        userId: userObjectId,
-        uId: data.uId,
-        email: data.email,
-        username: data.username,
-        avatarColor: data.avatarColor
-      },
-      config.JWT_TOKEN!
-    );
   }
 }

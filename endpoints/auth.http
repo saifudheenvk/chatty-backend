@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:5001
 @authUrlPath = api/v1/auth
+@userUrlPath = api/v1/user
 
 ###
 POST {{baseUrl}}/{{authUrlPath}}/signup
@@ -24,7 +25,7 @@ withCredentials: true
 
 {
   "username": "saifu",
-  "password": "12345"
+  "password": "123456"
 }
 
 
@@ -34,8 +35,28 @@ Content-Type: application/json
 Accept: application/json
 withCredentials: true
 
+###
+POST {{baseUrl}}/{{authUrlPath}}/forgot-password
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
 
-@userUrlPath = api/v1/user
+{
+  "email": "as@as.com"
+}
+
+
+###
+POST {{baseUrl}}/{{authUrlPath}}/reset-password/0482d64a9bf445fbcc716ba2e832833029617a91
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "password": "123456",
+  "confirmPassword": "123456"
+}
+
 
 ###
 POST {{baseUrl}}/{{userUrlPath}}/currentuser

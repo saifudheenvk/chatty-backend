@@ -9,7 +9,7 @@ export default (app: Application) => {
   const routes = () => {
     app.use('/queues', serverAdapter.getRouter());
     app.use(`${API_BASE_PATH}/auth`, authRoutes.routes());
-    app.use(`${API_BASE_PATH}/auth`, authRoutes.routes());
+    app.use(`${API_BASE_PATH}/auth`, authRoutes.signOutRoutes());
 
     app.use(`${API_BASE_PATH}/user`, authMiddleware.verifyUser, currentUserRoutes.routes());
   };
