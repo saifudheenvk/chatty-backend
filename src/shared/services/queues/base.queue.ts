@@ -5,13 +5,13 @@ import Logger from 'bunyan';
 import { config } from '@root/config';
 import { ExpressAdapter } from '@bull-board/express';
 import { IAuthJob } from '@auth/interfaces/auth.interface';
-import { IUserJob } from '@user/interfaces/user.interface';
+import { IEmailJob, IUserJob } from '@user/interfaces/user.interface';
 
 let bullAdapters: BullAdapter[] = [];
 
 export let serverAdapter: ExpressAdapter;
 
-type IBaseJobData = IAuthJob | IUserJob;
+type IBaseJobData = IAuthJob | IUserJob | IEmailJob;
 
 export abstract class BaseQueue {
   queue: Queue.Queue;
