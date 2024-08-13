@@ -15,7 +15,7 @@ export class CurrentUser {
     let token = null;
 
     const cachedUser: IUserDocument = (await userCache.getUserFromCache(`${req!.currentUser?.userId}`)) as IUserDocument;
-    const existingUser: IUserDocument = cachedUser.id ? cachedUser : await userService.getUserById(`${req.currentUser!.userId}`);
+    const existingUser: IUserDocument = cachedUser ? cachedUser : await userService.getUserById(`${req.currentUser!.userId}`);
     logger.info(existingUser);
     if (Object.keys(existingUser).length) {
       user = existingUser;
