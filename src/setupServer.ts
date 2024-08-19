@@ -14,6 +14,7 @@ import applicationRoutes from '@root/routes';
 import Logger from 'bunyan';
 import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
 import { config } from '@root/config';
+import { SocketIOPostHandler } from '@sockets/post';
 
 const SERVER_PORT = 5001;
 
@@ -106,6 +107,8 @@ export class ChattyServer {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private socketConnections(io: Server) {}
+  private socketConnections(io: Server) {
+    const postSocket: SocketIOPostHandler = new SocketIOPostHandler(io);
+    postSocket.listen();
+  }
 }
