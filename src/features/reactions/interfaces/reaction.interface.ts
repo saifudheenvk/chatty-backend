@@ -4,12 +4,12 @@ import { Document } from 'mongoose';
 export interface IReactionDocument extends Document {
   _id?: string | ObjectId;
   username: string;
-  avataColor: string;
+  avatarColor: string;
   type: string;
   postId: string;
   profilePicture: string;
   createdAt?: Date;
-  userTo?: string | ObjectId;
+  userTo?: string | ObjectId; //id of user who created the post
   comment?: string;
 }
 

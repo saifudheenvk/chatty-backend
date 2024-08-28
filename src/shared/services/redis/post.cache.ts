@@ -1,8 +1,8 @@
 import { IPostDocument, ISavePostToCache } from '@post/interfaces/post.interface';
-import { BaseCache } from './base.cache';
+import { BaseCache } from '@services/redis/base.cache';
 import { RedisCommandRawReply } from '@redis/client/dist/lib/commands';
 import { Helper } from '@global/helpers/helper';
-import { IReactions } from '@reactions/interfaces/reaction.interface';
+import { IReactions } from '@reaction/interfaces/reaction.interface';
 import { ServerError } from '@global/helpers/error-handler';
 
 export type PostCacheMultiType = string | number | Buffer | RedisCommandRawReply[] | IPostDocument | IPostDocument[];

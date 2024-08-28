@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:5001
+@reactionUrlPath = api/v1/reaction
+
+###
+POST {{baseUrl}}/{{reactionUrlPath}}/post
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+# type - like | love | wow | happy | sad | angry
+# previousReaction (if it exist) - like | love | wow | happy | sad | angry
+# postReactions - increment new reaction by 1 and decrement previous reaction by 1
+
+{
+  "userTo": "669d312c4e851e74b22be193",
+  "postId": "66c2ef3860011e5cf5883f1a",
+  "type": "angry",
+  "previousReaction": "",
+  "postReactions": {"like": 0,"love": 0,"happy": 0,"sad": 0,"wow": 0,"angry": 1},
+  "profilePicture": ""
+}
+
+###
+DELETE {{baseUrl}}/{{reactionUrlPath}}/post/66c2ef3860011e5cf5883f1a/angry/{"like": 0,"love": 0,"happy": 0,"sad": 0,"wow": 0,"angry": 0}
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{}
+
+###
+GET {{baseUrl}}/{{reactionUrlPath}}/post/66c2ef3860011e5cf5883f1a
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{reactionUrlPath}}/post/username/single/66c2ef3860011e5cf5883f1a/Saifu
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{reactionUrlPath}}/post/username/Saifu
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
