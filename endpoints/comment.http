@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:5001
+@commentUrlPath = api/v1/comment
+
+###
+GET {{baseUrl}}/{{commentUrlPath}}/post/66c2ef3860011e5cf5883f1a
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{commentUrlPath}}/post/names/66c2ef3860011e5cf5883f1a
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+GET {{baseUrl}}/{{commentUrlPath}}/post/single/66c2ef3860011e5cf5883f1a/66d062cea3ddff68b1e31d07
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+###
+POST {{baseUrl}}/{{commentUrlPath}}/post
+Content-Type: application/json
+Accept: application/json
+withCredentials: true
+
+{
+  "userTo": "669d312c4e851e74b22be193",
+  "postId": "66c2ef3860011e5cf5883f1a",
+  "comment": "Really cool",
+  "profilePicture": ""
+}

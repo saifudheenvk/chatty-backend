@@ -6,7 +6,9 @@ import { Remove } from '@reaction/controllers/remove-reaction';
 import { reactionQueue } from '@services/queues/reactions.queue';
 
 
-
+jest.useFakeTimers();
+jest.mock('@services/queues/base.queue');
+jest.mock('@services/redis/reaction.cache');
 
 describe('Delete Reaction', () => {
   beforeEach(() => {

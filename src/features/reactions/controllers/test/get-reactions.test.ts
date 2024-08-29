@@ -8,8 +8,8 @@ import { postMockData } from '@root/mocks/post.mock';
 import mongoose from 'mongoose';
 
 jest.useFakeTimers();
-jest.mock('@service/queues/base.queue');
-jest.mock('@service/redis/reaction.cache');
+jest.mock('@services/queues/base.queue');
+jest.mock('@services/redis/reaction.cache');
 
 describe('Get', () => {
   beforeEach(() => {
