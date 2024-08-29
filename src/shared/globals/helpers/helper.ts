@@ -1,3 +1,7 @@
+import { config } from '@root/config';
+import Logger from 'bunyan';
+
+const logger: Logger = config.createLogger('helper');
 export class Helper {
   static convertFirstLetterUppercase(str: string): string {
     const valueString = str.toLowerCase();
@@ -22,6 +26,7 @@ export class Helper {
     try {
       return JSON.parse(data);
     } catch (e) {
+      logger.error(e);
       return data;
     }
   }

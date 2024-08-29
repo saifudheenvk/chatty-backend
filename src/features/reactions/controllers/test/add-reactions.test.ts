@@ -6,8 +6,8 @@ import { reactionQueue } from '@services/queues/reactions.queue';
 import { Add } from '@reaction/controllers/add-reactions';
 
 jest.useFakeTimers();
-jest.mock('@service/queues/base.queue');
-jest.mock('@service/redis/reaction.cache');
+jest.mock('@services/queues/base.queue');
+jest.mock('@services/redis/reaction.cache');
 
 describe('AddReaction', () => {
   beforeEach(() => {
