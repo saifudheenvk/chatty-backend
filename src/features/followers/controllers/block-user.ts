@@ -36,8 +36,8 @@ export class Block {
   }
 
   private updateBlockedUserDataInCache(userId: string, currentUserId: string, type: 'block' | 'unblock'): void {
-    const blockedBy: Promise<void> = followerCache.updateBlockedUserPropInCache(`${currentUserId}`, 'blockedBy', userId, type);
-    const blocked: Promise<void> = followerCache.updateBlockedUserPropInCache(`${userId}`, 'blocked', currentUserId, type);
+    const blocked: Promise<void> = followerCache.updateBlockedUserPropInCache(`${currentUserId}`, 'blocked', userId, type);
+    const blockedBy: Promise<void> = followerCache.updateBlockedUserPropInCache(`${userId}`, 'blockedBy', currentUserId, type);
     Promise.all([blockedBy, blocked]);
   }
 }
