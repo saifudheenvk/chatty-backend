@@ -42,7 +42,7 @@ export class Follow {
 
     const followerToDBObject: IFollowerJobData = {
       followerDocumentId: followerObjectId,
-      username: response[0].username!,
+      username: req.currentUser!.username,
       keyOne: `${userId}`,
       keyTwo: `${followerId}`
     };

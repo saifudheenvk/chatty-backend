@@ -26,8 +26,8 @@ Accept: application/json
 withCredentials: true
 
 {
-  "userTo": "669d312c4e851e74b22be193",
-  "postId": "66c2ef3860011e5cf5883f1a",
-  "comment": "Really cool",
+  "userTo": "66de958d32180d3a0d91ade7",
+  "postId": "66de95b232180d3a0d91aded",
+  "comment": "Really cool one. Keep it up",
   "profilePicture": ""
 }

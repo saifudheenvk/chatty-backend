@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ICommentDocument } from '@comments/interfaces/comments.interface';
 import { IReactionDocument } from '@reaction/interfaces/reaction.interface';
 import { Server, Socket} from 'socket.io';
