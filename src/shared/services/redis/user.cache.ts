@@ -75,8 +75,7 @@ export class UserCache extends BaseCache {
       }
 
       const response: IUserDocument = (await this.client.HGETALL(`user:${userId}`)) as unknown as IUserDocument;
-      this.logger.info(response);
-      if (response.id) {
+      if (response._id) {
         response.createdAt = new Date(Helper.parseJson(`${response.createdAt}`));
         response.postsCount = Helper.parseJson(`${response.postsCount}`);
         response.blocked = Helper.parseJson(`${response.blocked}`);
@@ -85,6 +84,13 @@ export class UserCache extends BaseCache {
         response.social = Helper.parseJson(`${response.social}`);
         response.followersCount = Helper.parseJson(`${response.followersCount}`);
         response.followingCount = Helper.parseJson(`${response.followingCount}`);
+        response.bgImageId = Helper.parseJson(`${response.bgImageId}`);
+        response.bgImageVersion = Helper.parseJson(`${response.bgImageVersion}`);
+        response.profilePicture = Helper.parseJson(`${response.profilePicture}`);
+        response.work = Helper.parseJson(`${response.work}`);
+        response.school = Helper.parseJson(`${response.school}`);
+        response.location = Helper.parseJson(`${response.location}`);
+        response.quote = Helper.parseJson(`${response.quote}`);
       }
       return response;
     } catch (e) {

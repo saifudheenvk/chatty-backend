@@ -17,6 +17,7 @@ import { config } from '@root/config';
 import { SocketIOPostHandler } from '@sockets/post';
 import { SocketIOFollowerHandler } from '@sockets/follower';
 import { SocketIOUserHandler } from '@sockets/user';
+import { SocketIONotificationHandler } from '@sockets/notification';
 
 const SERVER_PORT = 5001;
 
@@ -42,7 +43,7 @@ export class ChattyServer {
       cookieSession({
         name: 'session',
         keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
-        maxAge: 24 * 7 * 3600,
+        maxAge: 24 * 7 * 3600 * 1000,
         secure: config.NODE_ENV !== 'development'
       })
     );
@@ -113,9 +114,11 @@ export class ChattyServer {
     const followSocket: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
     const postSocket: SocketIOPostHandler = new SocketIOPostHandler(io);
     const userSocket: SocketIOUserHandler = new SocketIOUserHandler(io);
+    const notificationSocket: SocketIONotificationHandler = new SocketIONotificationHandler();
     
     postSocket.listen();
     followSocket.listen();
     userSocket.listen();
+    notificationSocket.listen(io);
   }
 }

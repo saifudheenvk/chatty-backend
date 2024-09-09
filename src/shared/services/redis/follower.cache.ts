@@ -94,7 +94,7 @@ export class FollowerCache extends BaseCache {
         remove(blocked, (id: string) => id === value);
         blocked = [...blocked];
       }
-      multi.HSET(`users:${key}`, `${prop}`, JSON.stringify(blocked));
+      multi.HSET(`user:${key}`, `${prop}`, JSON.stringify(blocked));
       await multi.exec();
     } catch (error) {
       this.logger.error(error);
