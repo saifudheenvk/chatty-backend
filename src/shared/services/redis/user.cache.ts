@@ -98,4 +98,18 @@ export class UserCache extends BaseCache {
       throw new ServerError('Server error. Try again');
     }
   }
+
+  public async updateSingleUserFromcache(key: string, prop: string, value: string): Promise<IUserDocument> {
+    try {
+      if (!this.client.isOpen) {
+        await this.client.connect();
+      }
+      await this.client.HSET(`user:${key}`, `${prop}`, JSON.stringify(value));
+      const response: IUserDocument = await this.getUserFromCache(key) as IUserDocument;
+      return response;
+    } catch (error) {
+      this.logger.error(error);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
 }
