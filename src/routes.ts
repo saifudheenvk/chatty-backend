@@ -1,8 +1,10 @@
 import { authRoutes } from '@auth/routes/authRoutes';
 import { currentUserRoutes } from '@auth/routes/currentUserRoutes';
+import { chatRoutes } from '@chat/routes/chatRoutes';
 import { commentRoutes } from '@comments/routes/commentRoutes';
 import { followRoutes } from '@follower/routes/followRotes';
 import { authMiddleware } from '@global/helpers/auth-middleware';
+import { imageRoutes } from '@image/routes/imageRoutes';
 import { postRoutes } from '@post/routes/postRoutes';
 import { reactionRoutes } from '@reaction/routes/reactionRotes';
 import { serverAdapter } from '@services/queues/base.queue';
@@ -20,6 +22,8 @@ export default (app: Application) => {
     app.use(`${API_BASE_PATH}/reaction`, authMiddleware.verifyUser, reactionRoutes.routes());
     app.use(`${API_BASE_PATH}/comment`, authMiddleware.verifyUser, commentRoutes.routes());
     app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, followRoutes.routes());
+    app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, imageRoutes.routes());
+    app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, chatRoutes.routes());
   };
 
   routes();
