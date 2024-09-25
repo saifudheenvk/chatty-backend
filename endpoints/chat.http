@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5000
+@baseUrl = http://localhost:5001
 @urlPath = api/v1
 
 ###
@@ -8,7 +8,7 @@ Accept: application/json
 withCredentials: true
 
 ###
-GET {{baseUrl}}/{{urlPath}}/chat/message/user/<receiverId>
+GET {{baseUrl}}/{{urlPath}}/chat/message/user/66d48542582f3ed7993dc7a0
 Content-Type: application/json
 Accept: application/json
 withCredentials: true
@@ -20,12 +20,12 @@ Accept: application/json
 withCredentials: true
 
 {
-  "conversationId": "",
-  "receiverId": "",
-  "receiverUsername": "",
-  "receiverAvatarColor": "",
-  "receiverProfilePicture": "",
-  "body": "",
+  "conversationId": "66f3a1688db12b765e127a68",
+  "receiverId": "66d48542582f3ed7993dc7a0",
+  "receiverUsername": "Saifu3",
+  "receiverAvatarColor": "blue",
+  "receiverProfilePicture": "https://res.cloudinary.com/dhhiyrhfh/image/upload/v1725863311/66de958d32180d3a0d91ade7",
+  "body": "Hello da",
   "gifUrl": "",
   "isRead": false,
   "selectedImage": ""
@@ -38,8 +38,8 @@ Accept: application/json
 withCredentials: true
 
 {
-  "userOne": "",
-  "userTwo": ""
+  "userOne": "66d48542582f3ed7993dc7a0",
+  "userTwo": "66d48511582f3ed7993dc792"
 }
 
 ###
@@ -49,8 +49,8 @@ Accept: application/json
 withCredentials: true
 
 {
-  "userOne": "",
-  "userTwo": ""
+  "userOne": "66d48542582f3ed7993dc7a0",
+  "userTwo": "66d48511582f3ed7993dc792"
 }
 
 ###
@@ -60,8 +60,8 @@ Accept: application/json
 withCredentials: true
 
 {
-  "senderId": "",
-  "receiverId": ""
+  "senderId": "66d48511582f3ed7993dc792",
+  "receiverId": "66d48542582f3ed7993dc7a0"
 }
 
 ###
@@ -72,14 +72,14 @@ withCredentials: true
 
 # For this endpoint, the type is either add or remove
 {
-  "conversationId": "",
-  "messageId": "",
-  "reaction": "",
-  "type": ""
+  "conversationId": "66f3a1688db12b765e127a68",
+  "messageId": "66f3a1688db12b765e127a67",
+  "reaction": "love",
+  "type": "remove"
 }
 
 ###
-DELETE {{baseUrl}}/{{urlPath}}/chat/message/mark-as-deleted/<messageId>/<senderId>/<receiverId>/<type>
+DELETE {{baseUrl}}/{{urlPath}}/chat/message/mark-as-deleted/66f3a801f1951b2b4b865260/66d48511582f3ed7993dc792/66d48542582f3ed7993dc7a0/deleteForEveryone
 # For this endpoint, the type is either deleteForMe or deleteForEveryone
 Content-Type: application/json
 Accept: application/json

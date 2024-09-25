@@ -1,10 +1,12 @@
 import { IFileImageDocument } from '@image/interfaces/image.interface';
 import { ImageModel } from '@image/models/image.schema';
+import { config } from '@root/config';
 import { UserModel } from '@user/models/user.schema';
+import Logger from 'bunyan';
 import mongoose from 'mongoose';
 
 
-
+const logger: Logger = config.createLogger('imageService');
 class ImageService {
 
   public async addUserProfileImageToDB(userId: string, url: string, imgId: string, imgVersion: string): Promise<void> {
@@ -40,6 +42,7 @@ class ImageService {
 
   public async getBackgroundImageById(bgImageId: string): Promise<IFileImageDocument> {
     const image: IFileImageDocument = (await ImageModel.findOne({ bgImageId }).exec()) as IFileImageDocument;
+    logger.info(image);
     return image;
   }
 
