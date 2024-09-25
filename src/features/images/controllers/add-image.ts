@@ -52,7 +52,7 @@ export class Add {
       imgId: result.publicId,
       imgVersion: result.version
     };
-    imageQueue.addImageJob('addBackgroundImageToDB', bgImageJobData);
+    imageQueue.addImageJob('updateBackgroundImageToDB', bgImageJobData);
     const response: [IUserDocument, IUserDocument] = (await Promise.all([bgImageId, bgImageVersion])) as [IUserDocument, IUserDocument];
     socketIOImageObject.emit('update user', {
       bgImageId: result.publicId,
