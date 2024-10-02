@@ -14,6 +14,7 @@ export class SocketIOChatHandler {
 
   public listen(): void {
     this.io.on('connection', (socket: Socket) => {
+      //when two users starts enter into chat page
       socket.on('join room', (users: ISenderReceiver) => {
         const { senderName, receiverName } = users;
         const senderSocketId: string = connectedUsersMap.get(senderName) as string;

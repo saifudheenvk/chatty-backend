@@ -38,4 +38,15 @@ export class Get {
     posts = await cachedPosts.length ? cachedPosts : await postService.getPosts({imgId: '$ne', gifUrl: '$ne'}, skip, limit, { createdAt: -1 });
     res.status(HTTP_STATUS.OK).json({ message: 'All posts with images', posts });
   }
+
+  public async postsWithVideos(req: Request, res: Response): Promise<void> {
+    const { page } = req.params;
+    const skip = (parseInt(page) - 1) * PAGE_SIZE;
+    const limit = PAGE_SIZE * parseInt(page);
+    const newSkip = skip === 0? skip : skip + 1;
+    let posts: IPostDocument[] = [];
+    const cachedPosts: IPostDocument[] = await postCache.getPostsWithVieosFromCache('post', newSkip, limit);
+    posts = await cachedPosts.length ? cachedPosts : await postService.getPosts({videoId: '$ne'}, skip, limit, { createdAt: -1 });
+    res.status(HTTP_STATUS.OK).json({ message: 'All posts with images', posts });
+  }
 }

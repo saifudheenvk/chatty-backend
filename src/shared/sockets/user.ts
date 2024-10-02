@@ -2,6 +2,7 @@ import { ILogin, ISocketData } from '@user/interfaces/user.interface';
 import { Server, Socket } from 'socket.io';
 
 export let socketIOUserObject: Server;
+// These two arrays are used to keep track of online users. users keeps the list of online users. connectedUsersMap keeps the socketId of online users
 export const connectedUsersMap: Map<string, string> = new Map();
 let users: string[] = [];
 
@@ -15,6 +16,7 @@ export class SocketIOUserHandler {
 
   public listen(): void {
     this.io.on('connection', (socket: Socket) => {
+      //add users to list and emits it
       socket.on('setup', (data: ILogin) => {
         this.addClientToMap(data.userId, socket.id);
         this.addUser(data.userId);
@@ -29,6 +31,7 @@ export class SocketIOUserHandler {
         this.io.emit('unblocked user id', data);
       });
 
+      //on disconnect remove user from list and emits it
       socket.on('disconnect', () => {
         this.removeClientFromMap(socket.id);
       });
