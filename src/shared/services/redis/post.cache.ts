@@ -29,6 +29,8 @@ export class PostCache extends BaseCache {
       commentsCount,
       imgVersion,
       imgId,
+      videoVersion,
+      videoId,
       reactions,
       createdAt
     } = createdPost;
@@ -49,6 +51,8 @@ export class PostCache extends BaseCache {
       'reactions': JSON.stringify(reactions),
       'imgVersion': `${imgVersion}`,
       'imgId': `${imgId}`,
+      'videoVersion': `${videoVersion}`,
+      'videoId': `${videoId}`,
       'createdAt': `${createdAt}`
     };
 
@@ -137,6 +141,33 @@ export class PostCache extends BaseCache {
     }
   }
 
+  public async getPostsWithVieosFromCache(key: string, start: number, end: number) : Promise<IPostDocument[]> {
+    try {
+      if(!this.client.isOpen) {
+        this.client.connect();
+      }
+      const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true });
+      const multi: ReturnType<typeof this.client.multi> = this.client.multi();
+      for (const value of reply) {
+        multi.HGETALL(`post:${value}`);
+      }
+      const replies: PostCacheMultiType = (await multi.exec()) as PostCacheMultiType;
+      const postReplies: IPostDocument[] = [];
+      for (const post of replies as IPostDocument[]) {
+        if((post.videoId && post.videoVersion) || post.gifUrl) {
+          post.commentsCount = Helper.parseJson(`${post.commentsCount}`) as number;
+          post.reactions = Helper.parseJson(`${post.reactions}`) as IReactions;
+          post.createdAt = new Date(Helper.parseJson(`${post.createdAt}`)) as Date;
+          postReplies.push(post);
+        }
+      }
+      return postReplies;
+    } catch(e) {
+      this.logger.error(e);
+      throw new ServerError('Server error. Try again.');
+    }
+  }
+
   public async getUserPostsFromCache(key: string, uId: number) : Promise<IPostDocument[]> {
     try {
       if(!this.client.isOpen) {
@@ -197,7 +228,7 @@ export class PostCache extends BaseCache {
 
   public async updatePost(key: string, data: IPostDocument): Promise<IPostDocument> {
     try {
-      const { post, bgColor, feelings, privacy, gifUrl, imgVersion, imgId, profilePicture } = data;
+      const { post, bgColor, feelings, privacy, gifUrl, imgVersion, imgId, profilePicture, videoId, videoVersion } = data;
       const dataToSave = {
         'post': `${post}`,
         'bgColor': `${bgColor}`,
@@ -206,7 +237,9 @@ export class PostCache extends BaseCache {
         'gifUrl': `${gifUrl}`,
         'profilePicture': `${profilePicture}`,
         'imgVersion': `${imgVersion}`,
-        'imgId': `${imgId}`
+        'imgId': `${imgId}`,
+        'videoVersion': `${videoVersion}`,
+        'videoId': `${videoId}`
       };
       if (!this.client.isOpen) {
         await this.client.connect();
