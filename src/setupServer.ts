@@ -20,6 +20,8 @@ import { SocketIOUserHandler } from '@sockets/user';
 import { SocketIONotificationHandler } from '@sockets/notification';
 import { SocketIOImageHandler } from '@sockets/image';
 import { SocketIOChatHandler } from '@sockets/chat';
+import swaggerStats from 'swagger-stats';
+
 
 const SERVER_PORT = 5001;
 
@@ -36,6 +38,7 @@ export class ChattyServer {
     this.securityMiddleWare(this.app);
     this.standardMiddleWare(this.app);
     this.routeMiddleWare(this.app);
+    this.apiMonitoring(this.app);
     this.globalErrorHandler(this.app);
     this.startServer(this.app);
   }
@@ -71,6 +74,12 @@ export class ChattyServer {
     applicationRoutes(app);
   }
 
+  private apiMonitoring(app: Application): void {
+    app.use(swaggerStats.getMiddleware({
+      uriPath: '/api-monitoring',
+    }));
+  }
+
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
@@ -87,6 +96,9 @@ export class ChattyServer {
 
   private async startServer(app: Application): Promise<void> {
     try {
+      if (!config.JWT_TOKEN) {
+        throw new Error('JWT_TOKEN must be provided');
+      }
       const httpServer: http.Server = new http.Server(app);
       const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
@@ -106,6 +118,7 @@ export class ChattyServer {
   }
 
   private startHttpServer(httpServer: http.Server): void {
+    logger.info(`Worker with process id of ${process.pid} has started...`);
     logger.info(`Server has started with pid: ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
       logger.info(`Server Running On PORT: ${SERVER_PORT}`);
