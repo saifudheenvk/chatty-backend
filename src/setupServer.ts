@@ -7,13 +7,21 @@ import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { config } from './config';
 import { createClient } from 'redis';
 import { Server } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
-import applicationRoutes from './routes';
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import applicationRoutes from '@root/routes';
 import Logger from 'bunyan';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { config } from '@root/config';
+import { SocketIOPostHandler } from '@sockets/post';
+import { SocketIOFollowerHandler } from '@sockets/follower';
+import { SocketIOUserHandler } from '@sockets/user';
+import { SocketIONotificationHandler } from '@sockets/notification';
+import { SocketIOImageHandler } from '@sockets/image';
+import { SocketIOChatHandler } from '@sockets/chat';
+import swaggerStats from 'swagger-stats';
+
 
 const SERVER_PORT = 5001;
 
@@ -30,6 +38,7 @@ export class ChattyServer {
     this.securityMiddleWare(this.app);
     this.standardMiddleWare(this.app);
     this.routeMiddleWare(this.app);
+    this.apiMonitoring(this.app);
     this.globalErrorHandler(this.app);
     this.startServer(this.app);
   }
@@ -39,7 +48,7 @@ export class ChattyServer {
       cookieSession({
         name: 'session',
         keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
-        maxAge: 24 * 7 * 3600,
+        maxAge: 24 * 7 * 3600 * 1000,
         secure: config.NODE_ENV !== 'development'
       })
     );
@@ -65,6 +74,12 @@ export class ChattyServer {
     applicationRoutes(app);
   }
 
+  private apiMonitoring(app: Application): void {
+    app.use(swaggerStats.getMiddleware({
+      uriPath: '/api-monitoring',
+    }));
+  }
+
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response) => {
       res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
@@ -81,6 +96,9 @@ export class ChattyServer {
 
   private async startServer(app: Application): Promise<void> {
     try {
+      if (!config.JWT_TOKEN) {
+        throw new Error('JWT_TOKEN must be provided');
+      }
       const httpServer: http.Server = new http.Server(app);
       const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
@@ -100,11 +118,26 @@ export class ChattyServer {
   }
 
   private startHttpServer(httpServer: http.Server): void {
+    logger.info(`Worker with process id of ${process.pid} has started...`);
     logger.info(`Server has started with pid: ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
       logger.info(`Server Running On PORT: ${SERVER_PORT}`);
     });
   }
 
-  private socketConnections(io: Server) {}
+  private socketConnections(io: Server) {
+    const followSocket: SocketIOFollowerHandler = new SocketIOFollowerHandler(io);
+    const postSocket: SocketIOPostHandler = new SocketIOPostHandler(io);
+    const userSocket: SocketIOUserHandler = new SocketIOUserHandler(io);
+    const notificationSocket: SocketIONotificationHandler = new SocketIONotificationHandler();
+    const socketIOImageHandler: SocketIOImageHandler = new SocketIOImageHandler();
+    const socketIOChatHandler: SocketIOChatHandler = new SocketIOChatHandler(io);
+    
+    postSocket.listen();
+    followSocket.listen();
+    userSocket.listen();
+    notificationSocket.listen(io);
+    socketIOImageHandler.listen(io);
+    socketIOChatHandler.listen();
+  }
 }

@@ -19,5 +19,26 @@
     "allowSyntheticDefaultImports": true,
     "pretty": true,
     "resolveJsonModule": true,
-  }
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclaration": true }
+  ],
+    "paths": {
+      "@auth/*": ["src/features/auth/*"],
+      "@user/*": ["src/features/user/*"],
+      "@post/*": ["src/features/post/*"],
+      "@reaction/*": ["src/features/reactions/*"],
+      "@comments/*": ["src/features/comments/*"],
+      "@follower/*": ["src/features/followers/*"],
+      "@notification/*": ["src/features/notifications/*"],
+      "@image/*": ["src/features/images/*"],
+      "@chat/*": ["src/features/chats/*"],
+      "@global/*": ["src/shared/globals/*"],
+      "@services/*": ["src/shared/services/*"],
+      "@sockets/*": ["src/shared/sockets/*"],
+      "@workers/*": ["src/shared/workers/*"],
+      "@mocks/*": ["src/mocks/*"],
+      "@root/*": ["src/*"],
+    }
+  },
 }
