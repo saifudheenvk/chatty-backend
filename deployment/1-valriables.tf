@@ -110,7 +110,7 @@ variable "elasticache_parameter_group_name" {
 variable "ec2_instance_type" {
   description = "EC2 Instance Type"
   type        = string
-  default     = "t2.micro"
+  default     = "t2.medium"
 }
 
 variable "bastion_host_type" {
