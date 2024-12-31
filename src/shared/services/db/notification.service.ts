@@ -11,7 +11,7 @@ class NotificationService {
     const notifications: INotificationDocument[] = await NotificationModel.aggregate([{$match: { userTo: new mongoose.Types.ObjectId(userId) }}, 
       { $lookup: { from: 'User', localField: 'userFrom', foreignField: '_id', as: 'userFrom' } },
       { $unwind: '$userFrom' },
-      { $lookup: { from: 'AuthId', localField: 'userFrom.authId', foreignField: '_id', as: 'authId' } },
+      { $lookup: { from: 'Auth', localField: 'userFrom.authId', foreignField: '_id', as: 'authId' } },
       { $unwind: '$authId' },
       { $project: {
         _id: 1,
@@ -44,7 +44,7 @@ class NotificationService {
   }
 
   public async updateNotification(notificationId: string): Promise<void> {
-    await NotificationModel.updateOne({ _id: new mongoose.Types.ObjectId(notificationId) }, { read: { $set: true } }).exec();
+    await NotificationModel.updateOne({ _id: new mongoose.Types.ObjectId(notificationId) }, { $set: { read: true } }).exec();
   }
 }
 

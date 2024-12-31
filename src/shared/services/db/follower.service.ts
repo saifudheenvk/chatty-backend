@@ -20,8 +20,8 @@ class FollowerService {
   public async addFollowerToDB(data: IFollowerJobData): Promise<void> {
     const follower: IFollowerDocument = await FollowerModel.create({
       _id: data.followerDocumentId,
-      followeeId: new mongoose.Types.ObjectId(data.keyOne),
-      followerId: new mongoose.Types.ObjectId(data.keyTwo),
+      followeeId: new mongoose.Types.ObjectId(data.keyTwo),
+      followerId: new mongoose.Types.ObjectId(data.keyOne),
     });
 
     const users: Promise<BulkWriteResult> = UserModel.bulkWrite([
@@ -44,8 +44,8 @@ class FollowerService {
     if(response[1]?.notifications.follows) {
       const notificationModel: INotificationDocument = new NotificationModel();
       const notifications: INotificationDocument[] = await notificationModel.insertNotification({
-        userTo: data.keyOne!,
-        userFrom: data.keyTwo!,
+        userTo: data.keyTwo!,
+        userFrom: data.keyOne!,
         message: `${data.username} started following you`,
         notificationType: 'follow',
         entityId: new mongoose.Types.ObjectId(data.followerDocumentId),
@@ -58,7 +58,7 @@ class FollowerService {
         gifUrl: '',
         createdAt: new Date()
       });
-      socketIONotificationObject.emit('insert notification', notifications, { userTo: data.keyOne });
+      socketIONotificationObject.emit('insert notification', notifications, { userTo: data.keyTwo });
       const templateParams: INotificationTemplate = {
         message: `${data.username} started following you`,
         header: 'Follow Notification',
