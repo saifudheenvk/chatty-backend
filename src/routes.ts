@@ -5,6 +5,7 @@ import { commentRoutes } from '@comments/routes/commentRoutes';
 import { followRoutes } from '@follower/routes/followRotes';
 import { authMiddleware } from '@global/helpers/auth-middleware';
 import { imageRoutes } from '@image/routes/imageRoutes';
+import { notificationRoutes } from '@notification/routes/notificationRoutes';
 import { postRoutes } from '@post/routes/postRoutes';
 import { reactionRoutes } from '@reaction/routes/reactionRotes';
 import { serverAdapter } from '@services/queues/base.queue';
@@ -33,6 +34,7 @@ export default (app: Application) => {
     app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, imageRoutes.routes());
     app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, chatRoutes.routes());
     app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, userRoutes.routes());
+    app.use(`${API_BASE_PATH}`, authMiddleware.verifyUser, notificationRoutes.routes());
   };
 
   routes();

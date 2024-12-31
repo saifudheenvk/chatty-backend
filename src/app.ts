@@ -25,12 +25,12 @@ class Application {
   // Even though we have global error handler. We are npt able to handle some errors. So to handle those errors we can use this.
   private static handleExits(): void {
     process.on('uncaughtException', (error: Error) => {
-      logger.error(`There was an uncaught exception: ${error}`);
+      logger.error(`There was an uncaught exception: ${JSON.stringify(error)}`);
       Application.shutDownProperly(1);
     });
 
     process.on('unhandledRejection', (error: Error) => {
-      logger.error(`There was an unhandled rejection: ${error}`);
+      logger.error(`There was an unhandled rejection: ${JSON.stringify(error)}`);
       Application.shutDownProperly(2);
     });
 
